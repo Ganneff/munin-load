@@ -1,0 +1,13 @@
+[package]
+name = "load"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+munin-plugin = { git = "file:///home/joerg/devel/ganneff/munin-plugin" }
+flexi_logger = "0.22.3"
+log = "0.4.17"
+anyhow = "1.0.57"
+procfs = "^0.12"
