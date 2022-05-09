@@ -1,9 +1,7 @@
 //! Munin plugin to take load
 
 use anyhow::Result;
-use flexi_logger::Logger;
-use log::{debug, info};
-use munin_plugin::{config::Config, MuninPlugin};
+use munin_plugin::MuninPlugin;
 use procfs::LoadAverage;
 use std::io::{BufWriter, Write};
 
@@ -47,16 +45,7 @@ impl MuninPlugin for LoadPlugin {
 }
 
 fn main() -> Result<()> {
-    Logger::try_with_env_or_str("trace")
-        .unwrap()
-        .set_palette("b1;3;2;4;6".to_owned())
-        .start()
-        .unwrap();
-    info!("load started");
-    let config = Config::new("load".to_string());
-    debug!("Plugin: {:#?}", config);
-
     let load = LoadPlugin;
-    load.start(config)?;
+    load.simple_start("load".to_string())?;
     Ok(())
 }

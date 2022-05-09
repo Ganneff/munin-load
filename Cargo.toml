@@ -1,13 +1,15 @@
 [package]
 name = "load"
-version = "0.1.0"
+version = "1.0.0"
 edition = "2021"
+description = "Munin plugin to graph load, in Rust"
+license = "BSD-2-Clause"
+authors = [ "Joerg Jaspert <joerg@debian.org>" ]
+repository = "https://github.com/Ganneff/munin-load"
+keywords = [ "munin", "statistics", "daemon" ]
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-munin-plugin = { git = "file:///home/joerg/devel/ganneff/munin-plugin" }
-flexi_logger = "0.22.3"
-log = "0.4.17"
+munin-plugin = "0.1.3"
 anyhow = "1.0.57"
 procfs = "^0.12"
