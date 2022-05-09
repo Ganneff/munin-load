@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  test:
+    name: Run ${{ matrix.jobs.name }} with Rust ${{ matrix.rust }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        rust: [stable]
+        jobs:
+          - name: Clippy
+            task: cargo clippy --workspace --all-targets --verbose
+          - name: tests
+            task: cargo test --workspace --verbose
+          - name: fmt
+            task: cargo fmt --all -- --check
+        include:
+          - name: Clippy
+            env:
+              RUSTFLAGS: -Dwarnings
+    steps:
+      - uses: actions/checkout@v2
+      - name: Prepare Rust
+        uses: hecrj/setup-rust-action@v1
+        with:
+          rust-version: ${{ matrix.rust }}
+          components: clippy, rustfmt
+      - name: Cache cargo registry
+        uses: actions/cache@v2
+        continue-on-error: false
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+      - name: Run task ${{ matrix.jobs.name }}
+        run: ${{ matrix.jobs.task }}
