@@ -5,19 +5,13 @@ use flexi_logger::Logger;
 use log::{debug, info};
 use munin_plugin::{config::Config, MuninPlugin};
 use procfs::LoadAverage;
-use std::io::{self, BufWriter, Write};
+use std::io::{BufWriter, Write};
 
 #[derive(Debug)]
 struct LoadPlugin;
 
 impl MuninPlugin for LoadPlugin {
-    fn config(&self) -> Result<()> {
-        // We want to write a possibly large amount to stdout, take and lock it
-        let stdout = io::stdout();
-        let bufsize = 8192;
-        // Buffered writer, to gather multiple small writes together
-        let mut handle = BufWriter::with_capacity(bufsize, stdout.lock());
-
+    fn config<W: Write>(&self, handle: &mut BufWriter<W>) -> Result<()> {
         writeln!(handle, "graph_title Load average")?;
         writeln!(handle, "graph_args --base 1000 -l 0")?;
         writeln!(handle, "graph_vlabel load")?;
@@ -28,8 +22,6 @@ impl MuninPlugin for LoadPlugin {
         writeln!(handle, "load.critical 120")?;
         writeln!(handle, "graph_info The load average of the machine describes how many processes are in the run-queue (scheduled to run immediately.")?;
         writeln!(handle, "load.info Average load for the five minutes.")?;
-        // And flush the handle, so it can also deal with possible errors
-        handle.flush()?;
         Ok(())
     }
 

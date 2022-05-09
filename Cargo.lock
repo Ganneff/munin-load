@@ -194,8 +194,8 @@ dependencies = [
 
 [[package]]
 name = "munin-plugin"
-version = "0.1.0"
-source = "git+file:///home/joerg/devel/ganneff/munin-plugin#440781eb250e97cb2bb2d8e21c5f1373c07a2e3e"
+version = "0.1.2"
+source = "git+file:///home/joerg/devel/ganneff/munin-plugin#05292e90eba1b0cdfcaf5b0ce57d431015567d00"
 dependencies = [
  "anyhow",
  "log",
