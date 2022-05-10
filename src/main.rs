@@ -33,9 +33,10 @@ impl MuninPlugin for LoadPlugin {
     fn acquire(&self) {
         unimplemented!()
     }
-    fn fetch(&self) {
+    fn fetch<W: Write>(&self, handle: &mut BufWriter<W>) -> Result<()> {
         let load = (LoadAverage::new().unwrap().five * 100.0) as isize;
-        println!("load.value {}", load);
+        writeln!(handle, "load.value {}", load)?;
+        Ok(())
     }
 
     /// Check autoconf
