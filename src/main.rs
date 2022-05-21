@@ -24,7 +24,7 @@ impl MuninPlugin for LoadPlugin {
     }
 
     fn acquire<W: Write>(
-        &self,
+        &mut self,
         handle: &mut BufWriter<W>,
         _config: &Config,
         _epoch: u64,
@@ -41,7 +41,7 @@ impl MuninPlugin for LoadPlugin {
 }
 
 fn main() -> Result<()> {
-    let load = LoadPlugin;
+    let mut load = LoadPlugin;
     load.simple_start("load".to_string())?;
     Ok(())
 }
