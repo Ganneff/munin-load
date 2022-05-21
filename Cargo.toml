@@ -1,6 +1,6 @@
 [package]
 name = "load"
-version = "1.0.1"
+version = "1.0.2"
 edition = "2021"
 description = "Munin plugin to graph load, in Rust"
 license = "BSD-2-Clause"
