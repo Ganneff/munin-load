@@ -1,7 +1,7 @@
 //! Munin plugin to take load
 
 use anyhow::Result;
-use munin_plugin::MuninPlugin;
+use munin_plugin::{Config, MuninPlugin};
 use procfs::LoadAverage;
 use std::io::{BufWriter, Write};
 
@@ -23,18 +23,13 @@ impl MuninPlugin for LoadPlugin {
         Ok(())
     }
 
-    fn run(&self) {
-        unimplemented!()
-    }
-
-    fn daemonize(&self) {
-        unimplemented!()
-    }
-    fn acquire(&self) {
-        unimplemented!()
-    }
-    fn fetch<W: Write>(&self, handle: &mut BufWriter<W>) -> Result<()> {
-        let load = (LoadAverage::new().unwrap().five * 100.0) as isize;
+    fn acquire<W: Write>(
+        &self,
+        handle: &mut BufWriter<W>,
+        _config: &Config,
+        _epoch: u64,
+    ) -> Result<()> {
+        let load = (LoadAverage::new().unwrap().five * 100.0) as u32;
         writeln!(handle, "load.value {}", load)?;
         Ok(())
     }
